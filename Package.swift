@@ -24,5 +24,6 @@ let package = Package(
         .testTarget(
             name: "UtilsTests",
             dependencies: ["Utils"]),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )

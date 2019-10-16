@@ -153,12 +153,12 @@ extension Locator {
 extension Locator {
     
     public struct Result {
-        let country: String         //国家
-        let province: String        //省
-        let city: String            //市
-        let area: String            //区
-        let longitude: Double
-        let latitude: Double
+        public let country: String         //国家
+        public let province: String        //省
+        public let city: String            //市
+        public let area: String            //区
+        public let longitude: Double
+        public let latitude: Double
     }
     
     public enum Error: Swift.Error {
