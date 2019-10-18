@@ -2,7 +2,7 @@ import Foundation
 
 public enum Address {
     
-    private static let list: [Model] = {
+    public static let list: [Model] = {
         guard let data = json.data(using: .utf8) else {
             return []
         }
