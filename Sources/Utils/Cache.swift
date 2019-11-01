@@ -18,6 +18,7 @@ public class Cache {
     public func set<T: Encodable>(_ object: T, forKey key: String) throws {
         do {
             try Disk.save(object, to: directory, as: path + "/\(key.md5)")
+            
         } catch {
             throw Error(rawValue: (error as NSError).code) ?? .unknow
         }
