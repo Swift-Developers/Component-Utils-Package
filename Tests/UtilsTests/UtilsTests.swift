@@ -84,9 +84,16 @@ final class UtilsTests: XCTestCase {
         }
     }
     
+    func testWrapper() {
+        let wrapper = Wrapper(["a": 1])
+        XCTAssertEqual(wrapper.value, ["a": 1])
+        XCTAssertEqual(wrapper["a"], 1)
+    }
+    
     static var allTests = [
         ("testExample", testExample),
         ("testCache", testCache),
-        ("testAssociated", testAssociated)
+        ("testAssociated", testAssociated),
+        ("testWrapper", testWrapper)
     ]
 }

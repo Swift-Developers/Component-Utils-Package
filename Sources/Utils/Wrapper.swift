@@ -1,21 +1,32 @@
 import Foundation
 
+/// e.g.:
+///
+///     let wrapper = Wrapper(["a": 1])
+///     wrapper.value -> ["a": 1]
+///     wrapper["a"] -> 1
+///
 @dynamicMemberLookup
-class Wrapper<T> {
-    let value : T
-    init(_ value: T) { self.value = value }
+public class Wrapper<T> {
+    public let value : T
+    public init(_ value: T) { self.value = value }
     
-    subscript<U>(dynamicMember member: KeyPath<T, U>) -> U {
+    public subscript<U>(dynamicMember member: KeyPath<T, U>) -> U {
         value[keyPath: member]
     }
 }
 
+/// e.g.:
+///
+///     let wrapper = WeakWrapper(object)
+///     wrapper.value
+///
 @dynamicMemberLookup
-class WeakWrapper<T: AnyObject> {
-    weak var object: T?
-    init(_ object: T?) { self.object = object }
+public class WeakWrapper<T: AnyObject> {
+    public weak var object: T?
+    public init(_ object: T?) { self.object = object }
     
-    subscript<U>(dynamicMember member: KeyPath<T, U>) -> U? {
+    public subscript<U>(dynamicMember member: KeyPath<T, U>) -> U? {
         object?[keyPath: member]
     }
 }
