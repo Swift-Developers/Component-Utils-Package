@@ -47,43 +47,6 @@ final class UtilsTests: XCTestCase {
         }
     }
     
-    
-    private var testAssociated1Key: Void?
-    private var testAssociated2Key: Void?
-    
-    func testAssociated() {
-        
-        let object = NSObject()
-        
-        do {
-            let number = 123
-            
-            let old: Int? = object.associated.get(&testAssociated1Key)
-            
-            XCTAssertNil(old)
-            
-            object.associated.set(assign: &testAssociated1Key, number)
-            
-            let new: Int? = object.associated.get(&testAssociated1Key)
-            
-            XCTAssertEqual(new, number)
-        }
-        
-        do {
-            let number = NSString(format: "%d", 321)
-            
-            let old: NSString? = object.associated.get(&testAssociated2Key)
-            
-            XCTAssertNil(old)
-            
-            object.associated.set(retain: &testAssociated2Key, number)
-            
-            let new: NSString? = object.associated.get(&testAssociated2Key)
-            
-            XCTAssertEqual(new, number)
-        }
-    }
-    
     func testWrapper() {
         let wrapper = Wrapper(["a": 1])
         XCTAssertEqual(wrapper.value, ["a": 1])
@@ -93,7 +56,6 @@ final class UtilsTests: XCTestCase {
     static var allTests = [
         ("testExample", testExample),
         ("testCache", testCache),
-        ("testAssociated", testAssociated),
         ("testWrapper", testWrapper)
     ]
 }
