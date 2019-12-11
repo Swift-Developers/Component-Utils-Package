@@ -53,9 +53,65 @@ final class UtilsTests: XCTestCase {
         XCTAssertEqual(wrapper["a"], 1)
     }
     
+    func testUserDefaults() {
+        UserDefaults.TestInfo.removeAll()
+        
+        let observation1 = UserDefaults.TestInfo.observe(forKey: .string) { (old: String?, new: String?) in
+            print("old: \(String(describing: old)), new: \(String(describing: new))")
+        }
+        
+        let observation2 = UserDefaults.TestInfo.observe(forKey: .integer) { (old, new) in
+            print("old: \(String(describing: old)), new: \(String(describing: new))")
+        }
+        
+        XCTAssertNil(UserDefaults.TestInfo.string(forKey: .string))
+        UserDefaults.TestInfo.set("123", forKey: .string)
+        XCTAssertEqual(UserDefaults.TestInfo.string(forKey: .string), "123")
+        
+        XCTAssertEqual(UserDefaults.TestInfo.integer(forKey: .integer), 0)
+        UserDefaults.TestInfo.set(123, forKey: .integer)
+        XCTAssertEqual(UserDefaults.TestInfo.integer(forKey: .integer), 123)
+        
+        struct Model: Codable, Equatable {
+            let id: Int
+            let name: String
+        }
+        let model: Model = .init(id: 0, name: "a")
+        
+        let observation3 = UserDefaults.TestInfo.observe(forKey: .model) { (old: Model?, new: Model?) in
+            print("old: \(String(describing: old)), new: \(String(describing: new))")
+        }
+        
+        do {
+            let cache: Model? = UserDefaults.TestInfo.model(forKey: .model)
+            XCTAssertNil(cache)
+        }
+        
+        UserDefaults.TestInfo.set(model: model, forKey: .model)
+        
+        do {
+            let cache: Model? = UserDefaults.TestInfo.model(forKey: .model)
+            XCTAssertEqual(cache, model)
+        }
+        
+        UserDefaults.TestInfo.removeAll()
+    }
+    
     static var allTests = [
         ("testExample", testExample),
         ("testCache", testCache),
-        ("testWrapper", testWrapper)
+        ("testWrapper", testWrapper),
+        ("testUserDefaults", testUserDefaults)
     ]
+}
+
+extension UserDefaults {
+
+    enum TestInfo: UserDefaultsSettable {
+        enum defaultKeys: String {
+            case string
+            case integer
+            case model
+        }
+    }
 }

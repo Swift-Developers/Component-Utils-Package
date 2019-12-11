@@ -131,6 +131,26 @@ public extension UserDefaultsSettable where defaultKeys.RawValue == String {
     }
 }
 
+public extension UserDefaultsSettable where defaultKeys.RawValue == String {
+    
+    static func observe(forKey key: defaultKeys, change: @escaping (Any?, Any?) -> Void) -> DefaultsObservation {
+        return DefaultsObservation(key: forKey(key), onChange: change)
+    }
+    
+    static func observe<Old, New>(forKey key: defaultKeys, change: @escaping (Old?, New?) -> Void) -> DefaultsObservation {
+        return DefaultsObservation(key: forKey(key)) { old, new in
+            change(old as? Old, new as? New)
+        }
+    }
+    
+    static func observe<T: Decodable>(forKey key: defaultKeys, change: @escaping (T?, T?) -> Void) -> DefaultsObservation {
+        return DefaultsObservation(key: forKey(key)) { old, new in
+            change((try? JSONDecoder().decode(T.self, from: old as? Data ?? .init())) ?? old as? T,
+                   (try? JSONDecoder().decode(T.self, from: new as? Data ?? .init())) ?? new as? T)
+        }
+    }
+}
+
 private extension UserDefaults {
     
      func model<T: Decodable>(forKey key: String) -> T? {
@@ -148,5 +168,26 @@ private extension UserDefaults {
         } else {
             UserDefaults.standard.removeObject(forKey: key)
         }
+    }
+}
+
+public class DefaultsObservation: NSObject {
+    let key: String
+    private var onChange: (Any?, Any?) -> Void
+    
+    init(key: String, onChange: @escaping (Any?, Any?) -> Void) {
+        self.onChange = onChange
+        self.key = key
+        super.init()
+        UserDefaults.standard.addObserver(self, forKeyPath: key, options: [.old, .new], context: nil)
+    }
+    
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard let change = change, object != nil else { return }
+        onChange(change[.oldKey], change[.newKey])
+    }
+    
+    deinit {
+        UserDefaults.standard.removeObserver(self, forKeyPath: key, context: nil)
     }
 }
