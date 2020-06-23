@@ -4,35 +4,44 @@ public class Delegate<Input, Output> {
     
     public init() {}
     
-    private var block: ((Input) -> Output?)?
+    private var closure: ((Input) -> Output?)?
     
-    public func delegate<T: AnyObject>(on target: T, block: @escaping ((T, Input) -> Output)) {
+    /// 委托回调
+    /// - Parameters:
+    ///   - target: 目标对象
+    ///   - closure: 回调闭包
+    public func delegate<T: AnyObject>(on target: T, closure: @escaping ((T, Input) -> Output)) {
         // The `target` is weak inside block, so you do not need to worry about it in the caller side.
-        self.block = { [weak target] input in
+        self.closure = { [weak target] input in
             guard let target = target else { return nil }
-            return block(target, input)
+            return closure(target, input)
         }
+    }
+    
+    /// 取消代理回调
+    public func cancell() {
+        self.closure = nil
     }
 
     @discardableResult
     public func callAsFunction(_ input: Input) -> Output? {
-        return block?(input)
+        return closure?(input)
     }
 }
 
 extension Delegate where Input == Void {
     
-    public func delegate<T: AnyObject>(on target: T, block: @escaping ((T) -> Output)) {
+    public func delegate<T: AnyObject>(on target: T, closure: @escaping ((T) -> Output)) {
         // The `target` is weak inside block, so you do not need to worry about it in the caller side.
-        self.block = { [weak target] _ in
+        self.closure = { [weak target] _ in
             guard let target = target else { return nil }
-            return block(target)
+            return closure(target)
         }
     }
     
     @discardableResult
     public func callAsFunction() -> Output? {
-        return block?(())
+        return closure?(())
     }
 }
 
@@ -51,7 +60,7 @@ extension Delegate where Output: OptionalProtocol {
     
     @discardableResult
     public func callAsFunction(_ input: Input) -> Output {
-        switch block?(input) {
+        switch closure?(input) {
         case .some(let value):
             return value
             
