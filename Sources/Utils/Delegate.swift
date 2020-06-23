@@ -6,22 +6,56 @@ public class Delegate<Input, Output> {
     
     private var block: ((Input) -> Output?)?
     
-    public func delegate<T: AnyObject>(on target: T, block: ((T, Input) -> Output)?) {
+    public func delegate<T: AnyObject>(on target: T, block: @escaping ((T, Input) -> Output)) {
         // The `target` is weak inside block, so you do not need to worry about it in the caller side.
         self.block = { [weak target] input in
             guard let target = target else { return nil }
-            return block?(target, input)
+            return block(target, input)
         }
     }
-    
-    public func call(_ input: Input) -> Output? {
+
+    @discardableResult
+    public func callAsFunction(_ input: Input) -> Output? {
         return block?(input)
     }
 }
 
 extension Delegate where Input == Void {
-    // To make syntax better for `Void` input.
-    public func call() -> Output? {
-        return call(())
+    
+    public func delegate<T: AnyObject>(on target: T, block: @escaping ((T) -> Output)) {
+        // The `target` is weak inside block, so you do not need to worry about it in the caller side.
+        self.block = { [weak target] _ in
+            guard let target = target else { return nil }
+            return block(target)
+        }
+    }
+    
+    @discardableResult
+    public func callAsFunction() -> Output? {
+        return block?(())
+    }
+}
+
+public protocol OptionalProtocol {
+    static var none: Self { get }
+}
+
+extension Optional: OptionalProtocol {
+    public static var none: Optional<Wrapped> {
+        return nil
+    }
+}
+
+extension Delegate where Output: OptionalProtocol {
+    
+    @discardableResult
+    public func callAsFunction(_ input: Input) -> Output {
+        switch block?(input) {
+        case .some(let value):
+            return value
+            
+        case .none:
+            return .none
+        }
     }
 }

@@ -188,14 +188,14 @@ fileprivate class LocationManagerDelegate: NSObject {
 extension LocationManagerDelegate: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        didChangeAuthorization.call((manager, status))
+        didChangeAuthorization((manager, status))
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        didUpdateLocations.call((manager, locations))
+        didUpdateLocations((manager, locations))
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Swift.Error) {
-        didFailWithError.call((manager, error))
+        didFailWithError((manager, error))
     }
 }
