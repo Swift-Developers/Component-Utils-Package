@@ -37,11 +37,12 @@ extension Delegate where Input == Void {
 }
 
 public protocol OptionalProtocol {
-    static var none: Self { get }
+    static var Nil: Self { get }
 }
 
 extension Optional: OptionalProtocol {
-    public static var none: Optional<Wrapped> {
+    
+    public static var Nil: Optional<Wrapped> {
         return nil
     }
 }
@@ -55,7 +56,7 @@ extension Delegate where Output: OptionalProtocol {
             return value
             
         case .none:
-            return .none
+            return .Nil
         }
     }
 }
