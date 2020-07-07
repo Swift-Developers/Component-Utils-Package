@@ -108,7 +108,7 @@ final class UtilsTests: XCTestCase {
 extension UserDefaults {
 
     enum TestInfo: UserDefaultsSettable {
-        enum defaultKeys: String {
+        enum Keys: String {
             case string
             case integer
             case model
