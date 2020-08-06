@@ -4,6 +4,7 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(UtilsTests.allTests),
+        testCase(UILabelBoundingRectTest.allTests)
     ]
 }
 #endif
