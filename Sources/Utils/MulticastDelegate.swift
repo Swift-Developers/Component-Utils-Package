@@ -1,10 +1,10 @@
 import Foundation
 
 /// 默认类
-public class MulticastDelegate<T>: NSObject {
+open class MulticastDelegate<T>: NSObject {
     
     /// 用来存储delegate的数组
-    public var delegates: [WeakWrapper<AnyObject>] = []
+    open var delegates: [WeakWrapper<AnyObject>] = []
 }
 
 extension MulticastDelegate: MulticastDelegateable {
