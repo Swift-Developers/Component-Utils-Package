@@ -56,8 +56,11 @@ extension UILabel {
     
     public static func boundingRect(with string: String, size: CGSize, attributes: Attribute...) -> CGSize {
         guard !string.isEmpty else { return .zero }
-        let context = attributes.context()
+        var context = attributes.context()
         let attributedString = NSAttributedString(string, context.font, context.lineBreakMode, context.textAlignment)
+        if context.shadowOffset == Attribute.automaticCalculateShadows{
+            context.shadowOffset = .zero
+        }
         return boundingRect(with: attributedString, size: size, context: context)
     }
     

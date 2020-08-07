@@ -10,6 +10,23 @@ final class UILabelBoundingRectTest: XCTestCase {
         XCTAssertEqual("Hello, World!", "Hello, World!")
     }
     
+    func testShadowOffset() {
+        let fitSize = CGSize(width: 0, height: 100)
+        let label = UILabel.random(of: String.random(ofLength: 10))
+        label.numberOfLines = 1
+        let sz1  = label.sizeThatFits(fitSize)
+        let sz2 = UILabel.boundingRect(
+            with: label.text!,
+            size: fitSize,
+            attributes:
+            .font(label.font),
+            .numberOfLines(label.numberOfLines),
+            .textAlignment(label.textAlignment),
+            .minimumScaleFactor(label.minimumScaleFactor)
+        )
+        XCTAssertEqual(sz1, sz2)
+    }
+    
     func testSimpleText() {
         let timer1 = PerformanceTimer("简单文本计算UILabel")
         let timer2 = PerformanceTimer("简单文本计算非UILabel")
@@ -90,6 +107,7 @@ final class UILabelBoundingRectTest: XCTestCase {
     
     static var allTests = [
         ("testExample", testExample),
+        ("testShadowOffset", testShadowOffset),
         ("testSimpleText", testSimpleText),
         ("testAttributedText", testAttributedText)
     ]
