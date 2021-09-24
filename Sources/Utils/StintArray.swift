@@ -15,7 +15,6 @@ public class StintArray<T> {
             self.value = Array(repeating: element, count: length)
         } else {
             self.value = [T]()
-            
         }
     }
 }
