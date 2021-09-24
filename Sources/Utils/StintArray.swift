@@ -1,7 +1,7 @@
 import Foundation
 
-/// 栈数组
-public class StackArray<T> {
+/// 限制长度数组
+public class StintArray<T> {
     
     public private(set) var length: Int
     
@@ -15,11 +15,12 @@ public class StackArray<T> {
             self.value = Array(repeating: element, count: length)
         } else {
             self.value = [T]()
+            
         }
     }
 }
 
-public extension StackArray {
+public extension StintArray {
     
     var count: Int { value.count }
 
@@ -42,7 +43,7 @@ public extension StackArray {
     }
 }
 
-public extension StackArray {
+public extension StintArray {
     
     /// 追加新数据
     /// - Parameter newElement: Element
@@ -85,7 +86,7 @@ public extension StackArray {
     }
 }
 
-extension StackArray: CustomStringConvertible {
+extension StintArray: CustomStringConvertible {
     public var description: String {
         """
         length: \(length)
@@ -95,7 +96,7 @@ extension StackArray: CustomStringConvertible {
 }
 
 /// 自定义类型添加Sequence，需要添加返回迭代器的方法 -> makeIterator()，实现for循环功能
-extension StackArray: Sequence {
+extension StintArray: Sequence {
 
     public func makeIterator() -> AnyIterator<T> {
         var iterator = value.makeIterator()
@@ -108,7 +109,7 @@ extension StackArray: Sequence {
     }
 }
 
-extension StackArray  {
+extension StintArray  {
     
     public subscript(index: Int) -> T {
         return value[index]
@@ -122,7 +123,7 @@ extension StackArray  {
     }
 }
 
-extension StackArray {
+extension StintArray {
     
     fileprivate class Lock {
         private let unfairLock: os_unfair_lock_t
