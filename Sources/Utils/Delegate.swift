@@ -1,8 +1,8 @@
 import Foundation
 
-class Delegate<Input, Output> {
+public class Delegate<Input, Output> {
     
-    init() {}
+    public init() {}
     
     private var closure: ((Input) -> Output?)?
     
@@ -10,7 +10,7 @@ class Delegate<Input, Output> {
     /// - Parameters:
     ///   - target: 目标对象
     ///   - closure: 回调闭包
-    func delegate<T: AnyObject>(on target: T, closure: @escaping ((T, Input) -> Output)) {
+    public func delegate<T: AnyObject>(on target: T, closure: @escaping ((T, Input) -> Output)) {
         // The `target` is weak inside block, so you do not need to worry about it in the caller side.
         self.closure = { [weak target] input in
             guard let target = target else { return nil }
@@ -19,19 +19,19 @@ class Delegate<Input, Output> {
     }
     
     /// 取消代理回调
-    func cancell() {
+    public func cancell() {
         self.closure = nil
     }
 
     @discardableResult
-    func callAsFunction(_ input: Input) -> Output? {
+    public func callAsFunction(_ input: Input) -> Output? {
         return closure?(input)
     }
 }
 
 extension Delegate where Input == Void {
     
-    func delegate<T: AnyObject>(on target: T, closure: @escaping ((T) -> Output)) {
+    public func delegate<T: AnyObject>(on target: T, closure: @escaping ((T) -> Output)) {
         // The `target` is weak inside block, so you do not need to worry about it in the caller side.
         self.closure = { [weak target] _ in
             guard let target = target else { return nil }
@@ -40,18 +40,18 @@ extension Delegate where Input == Void {
     }
     
     @discardableResult
-    func callAsFunction() -> Output? {
+    public func callAsFunction() -> Output? {
         return closure?(())
     }
 }
 
-protocol OptionalProtocol {
+public protocol OptionalProtocol {
     static var Nil: Self { get }
 }
 
 extension Optional: OptionalProtocol {
     
-    static var Nil: Optional<Wrapped> {
+    public static var Nil: Optional<Wrapped> {
         return nil
     }
 }
@@ -59,7 +59,7 @@ extension Optional: OptionalProtocol {
 extension Delegate where Output: OptionalProtocol {
     
     @discardableResult
-    func callAsFunction(_ input: Input) -> Output {
+    public func callAsFunction(_ input: Input) -> Output {
         switch closure?(input) {
         case .some(let value):
             return value

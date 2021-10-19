@@ -10,43 +10,6 @@ final class UtilsTests: XCTestCase {
         XCTAssertEqual("Hello, World!", "Hello, World!")
     }
     
-    func testCache() {
-        
-        let cache = Cache(.caches, "Test")
-        
-        struct Model: Codable, Equatable {
-            let id: Int
-        }
-        do {
-            try cache.set(Model(id: 1), forKey: "model")
-            
-        } catch {
-            XCTAssertThrowsError(error)
-        }
-        
-        do {
-            let model: Model = try cache.get(for: "model").get()
-            XCTAssertEqual(model, Model(id: 1))
-            
-        } catch {
-            XCTAssertThrowsError(error)
-        }
-        
-        struct Model2: Codable, Equatable, Cacheable {
-            let name: String
-        }
-        
-        do {
-            let model2 = Model2(name: "abc")
-            try model2.cache(identifier: "test", from: cache)
-            let fetch = try Model2.fetch(identifier: "test", from: cache).get()
-            XCTAssertEqual(model2, fetch)
-            
-        } catch {
-            XCTAssertThrowsError(error)
-        }
-    }
-    
     func testWrapper() {
         let wrapper = Wrapper(["a": 1])
         XCTAssertEqual(wrapper.value, ["a": 1])
@@ -56,11 +19,11 @@ final class UtilsTests: XCTestCase {
     func testUserDefaults() {
         UserDefaults.TestInfo.removeAll()
         
-        let observation1 = UserDefaults.TestInfo.observe(forKey: .string) { (old: String?, new: String?) in
+        _ = UserDefaults.TestInfo.observe(forKey: .string) { (old: String?, new: String?) in
             print("old: \(String(describing: old)), new: \(String(describing: new))")
         }
         
-        let observation2 = UserDefaults.TestInfo.observe(forKey: .integer) { (old, new) in
+        _ = UserDefaults.TestInfo.observe(forKey: .integer) { (old, new) in
             print("old: \(String(describing: old)), new: \(String(describing: new))")
         }
         
@@ -78,7 +41,7 @@ final class UtilsTests: XCTestCase {
         }
         let model: Model = .init(id: 0, name: "a")
         
-        let observation3 = UserDefaults.TestInfo.observe(forKey: .model) { (old: Model?, new: Model?) in
+        _ = UserDefaults.TestInfo.observe(forKey: .model) { (old: Model?, new: Model?) in
             print("old: \(String(describing: old)), new: \(String(describing: new))")
         }
         
@@ -99,7 +62,6 @@ final class UtilsTests: XCTestCase {
     
     static var allTests = [
         ("testExample", testExample),
-        ("testCache", testCache),
         ("testWrapper", testWrapper),
         ("testUserDefaults", testUserDefaults)
     ]
