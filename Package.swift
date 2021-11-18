@@ -26,7 +26,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: "Disk", url: "https://github.com/saoudrizwan/Disk.git", from: "0.6.4")
+        .package(name: "Disk", url: "https://csummer.coding.net/p/swift-developers/d/Disk/git", from: "0.6.4")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -47,9 +47,6 @@ let package = Package(
         ),
         .target(
             name: "Utils-Cache",
-            dependencies: [
-                .product(name: "Disk", package: "Disk")
-            ],
             path: "Sources",
             sources: ["Cache"]
         ),
