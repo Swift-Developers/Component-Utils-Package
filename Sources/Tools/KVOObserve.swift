@@ -38,7 +38,14 @@ private var ObserveKey: Void?
 extension ObserveWrapper where Base: NSObject {
     
     private var _observations: [NSKeyValueObservation] {
-        get { objc_getAssociatedObject(base, &ObserveKey) as? [NSKeyValueObservation] ?? [] }
+        get {
+            guard let value = objc_getAssociatedObject(base, &ObserveKey) as? [NSKeyValueObservation] else {
+                let empty: [NSKeyValueObservation] = []
+                objc_setAssociatedObject(base, &ObserveKey, empty, .OBJC_ASSOCIATION_ASSIGN)
+                return empty
+            }
+            return value
+        }
         set { objc_setAssociatedObject(base, &ObserveKey, newValue, .OBJC_ASSOCIATION_ASSIGN) }
     }
 }
