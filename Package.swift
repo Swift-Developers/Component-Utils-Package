@@ -11,13 +11,8 @@ let package = Package(
         .library(
             name: "Utils",
             targets: [
-                "Utils",
-                "Utils-Tools"
+                "Utils"
             ]
-        ),
-        .library(
-            name: "Utils-Tools",
-            targets: ["Utils-Tools"]
         )
     ],
     dependencies: [
@@ -27,16 +22,8 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Utils",
-            dependencies: [
-                "Utils-Tools",
-            ],
             path: "Sources",
             sources: ["Utils"]
-        ),
-        .target(
-            name: "Utils-Tools",
-            path: "Sources",
-            sources: ["Tools"]
         ),
         .testTarget(
             name: "UtilsTests",
