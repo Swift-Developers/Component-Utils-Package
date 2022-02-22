@@ -14,6 +14,16 @@ public class SoundPlayer: NSObject {
         /// 是否忽略后台时的进度
         let isBackgroundIgnore: Bool
         
+        public init(volume: Float = 1.0,
+             isLoop: Bool = false,
+             isBackground: Bool = false,
+             isBackgroundIgnore: Bool = false) {
+            self.volume = volume
+            self.isLoop = isLoop
+            self.isBackground = isBackground
+            self.isBackgroundIgnore = isBackgroundIgnore
+        }
+        
         public static let `default`: Config = .init(
             volume: 1.0,
             isLoop: false,
