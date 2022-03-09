@@ -5,7 +5,7 @@ public class BackgroundTimer: NSObject {
     
     private var actions: [AnyHashable: Action] = [:]
     
-    private(set) var current: TimeInterval = 0 {
+    public private(set) var current: TimeInterval = 0 {
         didSet { actions.values.forEach { $0(current) } }
     }
     private var timer: Timer?
@@ -81,6 +81,7 @@ extension BackgroundTimer {
     public func stop() {
         timer?.invalidate()
         timer = nil
+        current = 0
     }
     
     /// 继续
