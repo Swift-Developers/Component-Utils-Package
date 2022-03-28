@@ -72,6 +72,20 @@ public class SoundPlayer: NSObject {
     }
 }
 
+extension SoundPlayer {
+    
+    public static var isPlaying: Bool {
+        shared.items.contains { $0.isPalying }
+    }
+    
+    public static func isPlaying(with url: URL? = nil) -> Bool {
+        guard let url = url else { return false }
+        return shared.items
+                .filter { $0.url == url }
+                .contains { $0.isPalying }
+    }
+}
+
 extension SoundPlayer: SoundPlayerItemDelegate {
     
     func finish(item: SoundPlayerItem) {
@@ -90,6 +104,8 @@ class SoundPlayerItem: NSObject, AVAudioPlayerDelegate {
     let url: URL
     var isBackground: Bool = false
     var isBackgroundIgnore: Bool = false
+    
+    var isPalying: Bool { player?.isPlaying ?? false }
     
     private var player: AVAudioPlayer?
     private var deviceCurrentTime: TimeInterval?
