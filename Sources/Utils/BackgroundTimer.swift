@@ -6,7 +6,10 @@ public class BackgroundTimer: NSObject {
     private var actions: [AnyHashable: Action] = [:]
     
     public private(set) var current: TimeInterval = 0 {
-        didSet { actions.values.forEach { $0(current) } }
+        didSet {
+            guard timer?.isValid ?? false else { return }
+            actions.values.forEach { $0(current) }
+        }
     }
     private var timer: Timer?
     /// 计时器的间隔
