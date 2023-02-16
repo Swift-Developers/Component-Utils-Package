@@ -44,7 +44,9 @@ import UIKit
     // Also see -[UIScrollView adjustedContentInsetDidChange]
     @available(iOS 11.0, *)
     public var scrollViewDidChangeAdjustedContentInset: Delegate<UIScrollView, Void> {
-        (_scrollViewDidChangeAdjustedContentInset as? Delegate<UIScrollView, Void>) ?? Delegate<UIScrollView, Void>()
+        let temp = (_scrollViewDidChangeAdjustedContentInset as? Delegate<UIScrollView, Void>) ?? Delegate<UIScrollView, Void>()
+        _scrollViewDidChangeAdjustedContentInset = temp
+        return temp
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
