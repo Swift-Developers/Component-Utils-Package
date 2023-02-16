@@ -39,10 +39,13 @@ import UIKit
     // called when scrolling animation finished. may be called immediately if already at top
     public let scrollViewDidScrollToTop = Delegate<UIScrollView, Void>()
     
+    private var _scrollViewDidChangeAdjustedContentInset: Any?
+    
     // Also see -[UIScrollView adjustedContentInsetDidChange]
     @available(iOS 11.0, *)
-    public let scrollViewDidChangeAdjustedContentInset = Delegate<UIScrollView, Void>()
-    
+    public var scrollViewDidChangeAdjustedContentInset: Delegate<UIScrollView, Void> {
+        (_scrollViewDidChangeAdjustedContentInset as? Delegate<UIScrollView, Void>) ?? Delegate<UIScrollView, Void>()
+    }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDidScroll.callAsFunction(scrollView)
